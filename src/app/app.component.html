@@ -1,0 +1,49 @@
+<div class="container">
+  <br>
+  <div class="inputMarker">
+    <input type="text" class="form-control" placeholder="Enter Marker Name" [(ngModel)]="markerName"
+      required>&nbsp;&nbsp;
+    <button class="btn btn-outline-primary" (click)="add()" *ngIf="!update" title="Add Marker"> <i
+        class="fa fa-plus-square fa-lg"></i> Add Marker</button>
+    <button class="btn btn-outline-primary" (click)="Updateclick();update=false" *ngIf="update"
+      title="Update Marker">Update Marker</button>
+  </div>
+  <br>
+  <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="true">
+    <agm-marker *ngFor="let m of markers; let i = index" [iconUrl]="m.icon"
+      (mouseOver)="mouseover(m.lat,i)" (mouseOut)="mouseout(m.lat)" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label"
+      [markerDraggable]="m.draggable" (dragEnd)="markerDragEnd(m.mname, $event,i)">
+      <agm-info-window class="window" [isOpen]="isInfoWindowOpen ==i" [latitude]="m.lat" [longitude]="m.lng">
+        <strong>
+          <h5 style="text-align: center;padding-bottom: 0px">{{m.mname}}</h5> &nbsp; <h6>{{m.lat}}</h6>&nbsp; <h6>
+            {{m.lng}}</h6>
+        </strong>
+      </agm-info-window>
+    </agm-marker>
+  </agm-map>
+  <br>
+  <table class="table table-bordered" style="text-align: center">
+    <thead>
+      <tr>
+        <th>Sl.No</th>
+        <th>Name of the Marker</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th colspan="2">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of tablemarker;let i= index">
+        <td>{{i+1}}</td>
+        <td>{{t.label}}</td>
+        <td>{{t.lat}}</td>
+        <td>{{t.lng}}</td>
+        <td><button class="btn btn-success" [disabled]='nowICanDisable'
+            (click)="edit(t.lat,t.lng,t.mname,t.label,i);update=true" title="Edit"><i class="fa fa-pencil-square-o"></i>
+            Edit</button></td>
+        <td><button class="btn btn-danger" (click)="delete(i)" title="Delete"><i class="fa fa-trash"></i>
+            Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
